@@ -116,3 +116,5 @@ const gatewayapi = new GatewayAPIClient({
 - Types: `MobileMessageRequest`, `MobileMessageResponse`, `MultiMobileMessageRequest`, `MultiMobileMessageResponse`, `PhoneMessageWebhookEvent`, `SMSStatus`, `RCSStatus`
 
 ## License
+
+See `LICENSE`
