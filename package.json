@@ -7,7 +7,15 @@
     "sms",
     "rcs"
   ],
-  "license": "ISC",
+  "homepage": "https://gatewayapi.com",
+  "bugs": {
+    "url": "https://github.com/onlinecity/gatewayapi-node/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/onlinecity/gatewayapi-node.git"
+  },
+  "license": "MIT",
   "author": "@onlinecity",
   "type": "module",
   "main": "dist/index.js",
