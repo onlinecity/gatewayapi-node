@@ -5,13 +5,13 @@ Typesafe Node.js SDK for the GatewayAPI Messaging API.
 ## Install
 
 ```bash
-npm install gatewayapi-node
+npm install @onlinecity/gatewayapi-node
 ```
 
 ## Quickstart
 
 ```ts
-import { GatewayAPIClient } from "gatewayapi-node";
+import { GatewayAPIClient } from "@onlinecity/gatewayapi-node";
 
 const gatewayapi = new GatewayAPIClient({
   token: "YOUR_TOKEN",
@@ -29,7 +29,7 @@ console.log(response.msg_id);
 ## Send multiple messages
 
 ```ts
-import { GatewayAPIClient } from "gatewayapi-node";
+import { GatewayAPIClient } from "@onlinecity/gatewayapi-node";
 
 const gatewayapi = new GatewayAPIClient({
   token: "YOUR_TOKEN",
@@ -51,7 +51,7 @@ console.log(response.responses.map((item) => item.msg_id));
 ## Error handling
 
 ```ts
-import { GatewayAPIClient, GatewayAPIError } from "gatewayapi-node";
+import { GatewayAPIClient, GatewayAPIError } from "@onlinecity/gatewayapi-node";
 
 const gatewayapi = new GatewayAPIClient({
   token: "YOUR_TOKEN",
@@ -77,7 +77,7 @@ import {
   parsePhoneMessageWebhookEvent,
   isSMSStatusEvent,
   isRCSStatusEvent,
-} from "gatewayapi-node";
+} from "@onlinecity/gatewayapi-node";
 
 const payload = JSON.parse(requestBody);
 const event = parsePhoneMessageWebhookEvent(payload);
@@ -92,7 +92,7 @@ if (isSMSStatusEvent(event.event)) {
 ## Configuration
 
 ```ts
-import { GatewayAPIClient } from "gatewayapi-node";
+import { GatewayAPIClient } from "@onlinecity/gatewayapi-node";
 
 const gatewayapi = new GatewayAPIClient({
   token: "your-token",
