@@ -26,6 +26,14 @@ const response = await gatewayapi.submitSingle({
 console.log(response.msg_id);
 ```
 
+## Documentation
+
+- [Messaging API overview](https://gatewayapi.com/docs/message/overview/)
+- [Authentication](https://gatewayapi.com/docs/authentication/)
+- [Webhook signature verification](https://gatewayapi.com/docs/message/overview/#webhook-signature-verification)
+- [Integration guide](https://gatewayapi.com/docs/guide/)
+- [Error codes](https://gatewayapi.com/docs/error-codes/)
+
 ## Send multiple messages
 
 ```ts
