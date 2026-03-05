@@ -71,6 +71,7 @@ export class GatewayAPIClient {
       Accept: "application/json",
       Authorization: `Token ${this.token}`,
       ...options.headers,
+      "User-Agent": "gatewayapi-node",
     };
 
     let body: string | undefined;
