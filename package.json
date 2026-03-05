@@ -1,0 +1,25 @@
+{
+  "name": "gatewayapi-node",
+  "version": "0.1.0",
+  "description": "A typesafe NodeJS SDK for GatewayAPI Messaging API",
+  "keywords": [
+    "gatewayapi",
+    "sms",
+    "rcs"
+  ],
+  "license": "ISC",
+  "author": "@onlinecity",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
