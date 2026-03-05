@@ -1,3 +1,10 @@
+import type {
+  MobileMessageRequest,
+  MobileMessageResponse,
+  MultiMobileMessageRequest,
+  MultiMobileMessageResponse,
+} from "./types.js";
+
 export type FetchLike = typeof fetch;
 
 export interface GatewayAPIClientOptions {
@@ -37,6 +44,18 @@ export class GatewayAPIClient {
 
   async post<T>(path: string, body: unknown): Promise<T> {
     return this.request<T>(path, { method: "POST", body });
+  }
+
+  async submitSingle(
+    request: MobileMessageRequest,
+  ): Promise<MobileMessageResponse> {
+    return this.post<MobileMessageResponse>("/mobile/single", request);
+  }
+
+  async submitMultiple(
+    request: MultiMobileMessageRequest,
+  ): Promise<MultiMobileMessageResponse> {
+    return this.post<MultiMobileMessageResponse>("/mobile/multi", request);
   }
 
   async request<T>(
