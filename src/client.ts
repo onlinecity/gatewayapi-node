@@ -1,16 +1,15 @@
-import type {
-  MobileMessageRequest,
-  MobileMessageResponse,
-  MultiMobileMessageRequest,
-  MultiMobileMessageResponse,
-} from "./types.js";
-
 export type FetchLike = typeof fetch;
 
 export interface GatewayAPIClientOptions {
   token: string;
   baseUrl?: string;
   fetch?: FetchLike;
+}
+
+export interface RequestOptions {
+  method: string;
+  body?: unknown;
+  headers?: Record<string, string>;
 }
 
 export class GatewayAPIError extends Error {
@@ -27,45 +26,30 @@ export class GatewayAPIError extends Error {
   }
 }
 
-export class GatewayAPIClient {
+/**
+ * Shared HTTP plumbing for the GatewayAPI clients: token auth, JSON
+ * encoding/decoding and error handling.
+ */
+export abstract class BaseClient {
   private token: string;
   private baseUrl: string;
   private fetchImpl: FetchLike;
 
-  constructor(options: GatewayAPIClientOptions) {
+  protected constructor(
+    clientName: string,
+    defaultBaseUrl: string,
+    options: GatewayAPIClientOptions,
+  ) {
     if (!options.token || options.token.trim().length === 0) {
-      throw new Error("GatewayAPIClient requires a non-empty token");
+      throw new Error(`${clientName} requires a non-empty token`);
     }
 
     this.token = options.token;
-    this.baseUrl = options.baseUrl ?? "https://messaging.gatewayapi.com";
+    this.baseUrl = options.baseUrl ?? defaultBaseUrl;
     this.fetchImpl = options.fetch ?? fetch;
   }
 
-  async post<T>(path: string, body: unknown): Promise<T> {
-    return this.request<T>(path, { method: "POST", body });
-  }
-
-  async submitSingle(
-    request: MobileMessageRequest,
-  ): Promise<MobileMessageResponse> {
-    return this.post<MobileMessageResponse>("/mobile/single", request);
-  }
-
-  async submitMultiple(
-    request: MultiMobileMessageRequest,
-  ): Promise<MultiMobileMessageResponse> {
-    return this.post<MultiMobileMessageResponse>("/mobile/multi", request);
-  }
-
-  async request<T>(
-    path: string,
-    options: {
-      method: string;
-      body?: unknown;
-      headers?: Record<string, string>;
-    },
-  ): Promise<T> {
+  async request<T>(path: string, options: RequestOptions): Promise<T> {
     const url = new URL(path, this.baseUrl);
     const headers: Record<string, string> = {
       Accept: "application/json",
