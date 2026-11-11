@@ -3,7 +3,7 @@ import type {
   PhoneMessageWebhookEvent,
   RCSStatus,
   SMSStatus,
-} from "./types.js";
+} from "./messaging-types.js";
 
 const smsEventType: MessageEventType = "message.status.sms";
 const rcsEventType: MessageEventType = "message.status.rcs";

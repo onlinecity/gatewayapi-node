@@ -1,6 +1,6 @@
-# GatewayAPI Messaging SDK (Node.js)
+# GatewayAPI SDK (Node.js)
 
-Typesafe Node.js SDK for the GatewayAPI Messaging API.
+Typesafe Node.js SDK for the GatewayAPI Messaging API and Account Management API.
 
 ## Install
 
@@ -33,6 +33,7 @@ console.log(response.msg_id);
 - [Webhook signature verification](https://gatewayapi.com/docs/message/overview/#webhook-signature-verification)
 - [Integration guide](https://gatewayapi.com/docs/guide/)
 - [Error codes](https://gatewayapi.com/docs/error-codes/)
+- Account Management API reference: [.com](https://manage.gatewayapi.com/redoc) / [.eu](https://manage.gatewayapi.eu/redoc)
 
 ## Send multiple messages
 
@@ -97,6 +98,38 @@ if (isSMSStatusEvent(event.event)) {
 }
 ```
 
+## Account management
+
+`GatewayAPIManagementClient` wraps the Account Management API (account info, credit, pricing and webhook configuration). It uses the same token as the messaging client.
+
+```ts
+import { GatewayAPIManagementClient } from "@onlinecity/gatewayapi-node";
+
+const manage = new GatewayAPIManagementClient({
+  token: "YOUR_TOKEN",
+  // baseUrl: "https://manage.gatewayapi.eu", // for EU accounts
+});
+
+const account = await manage.getAccount(); // { id, name }
+const { credit, currency } = await manage.getCredit();
+const pricing = await manage.getPricing(); // { currency, rates: CountryPrice[] }
+
+// Webhooks
+const { webhooks } = await manage.getWebhooks();
+const created = await manage.createWebhook({
+  label: "delivery-callback",
+  url: "https://example.com/webhooks/delivery",
+});
+console.log(created.secret); // HMAC signing secret, only returned on creation
+
+await manage.updateWebhookUrl(created.id, "https://example.com/new");
+await manage.updateWebhookLabel(created.id, "new-label");
+await manage.setStatusWebhook(created.id); // receive delivery-status callbacks
+await manage.deleteWebhook(created.id);
+```
+
+Prices and credit are returned as decimal strings (e.g. `"0.11000"`) to avoid floating-point rounding.
+
 ## Configuration
 
 ```ts
@@ -110,18 +143,19 @@ const gatewayapi = new GatewayAPIClient({
 ```
 
 - `token` is required.
-- `baseUrl` defaults to `https://messaging.gatewayapi.com`.
+- `baseUrl` defaults to `https://messaging.gatewayapi.com` (`GatewayAPIClient`) or `https://manage.gatewayapi.com` (`GatewayAPIManagementClient`). Use the `.eu` hosts for EU accounts.
 - `fetch` allows custom implementations (useful for older Node versions).
 
 ## API surface
 
 - `GatewayAPIClient`
+- `GatewayAPIManagementClient`
 - `GatewayAPIError`
 - `parsePhoneMessageWebhookEvent`
 - `isPhoneMessageWebhookEvent`
 - `isSMSStatusEvent`
 - `isRCSStatusEvent`
-- Types: `MobileMessageRequest`, `MobileMessageResponse`, `MultiMobileMessageRequest`, `MultiMobileMessageResponse`, `PhoneMessageWebhookEvent`, `SMSStatus`, `RCSStatus`
+- Types: `MobileMessageRequest`, `MobileMessageResponse`, `MultiMobileMessageRequest`, `MultiMobileMessageResponse`, `PhoneMessageWebhookEvent`, `SMSStatus`, `RCSStatus`, `AccountResponse`, `CreditResponse`, `PricingResponse`, `CountryPrice`, `OperatorPrice`, `Webhook`, `WebhooksResponse`, `WebhookKeyword`, `WebhookVirtualNumber`, `CreateWebhookRequest`, `CreateWebhookResponse`, `UpdateWebhookURLRequest`, `UpdateWebhookLabelRequest`
 
 ## License
 
