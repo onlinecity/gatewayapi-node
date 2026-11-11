@@ -1,7 +1,7 @@
 {
   "name": "@onlinecity/gatewayapi-node",
   "version": "0.1.1",
-  "description": "A typesafe NodeJS SDK for GatewayAPI Messaging API",
+  "description": "A typesafe NodeJS SDK for the GatewayAPI Messaging and Account Management APIs",
   "keywords": [
     "gatewayapi",
     "sms",
@@ -31,7 +31,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tsc && node --test \"test/**/*.test.js\""
   },
   "devDependencies": {
     "typescript": "^5.9.3"
